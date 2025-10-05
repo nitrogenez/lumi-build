@@ -3,6 +3,12 @@ const std = @import("std");
 const Build = std.Build;
 const Step = Build.Step;
 
+pub const Disk = struct {
+    step: *Step.Run,
+    path: []const u8,
+    fstab: PartList,
+};
+
 pub const Part = struct {
     label: []const u8,
     fstype: enum {
@@ -149,6 +155,9 @@ pub fn addDisk(
     }
     if (mkfs) |step| step.step.dependOn(&partition_disk.step);
 
-    if (dirs.len == 0)
-        return mkfs orelse partition_disk;
+    return Disk{
+        .step = mkfs orelse partition_disk,
+        .path = disk_path,
+        .fstab = resolved_parts,
+    };
 }
