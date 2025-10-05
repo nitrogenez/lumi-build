@@ -7,10 +7,12 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
         .root_source_file = b.path("src/root.zig"),
+        .link_libc = true,
     });
     const lib = b.addLibrary(.{
         .name = "lumi-build",
         .root_module = mod,
     });
+    lib.linkSystemLibrary("libparted");
     b.installArtifact(lib);
 }
