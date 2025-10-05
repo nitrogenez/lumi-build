@@ -125,8 +125,7 @@ pub fn addDisk(
     b: *Build,
     name: []const u8,
     parttable: []const PartQuery,
-    dirs: []const []const u8,
-) !*Step.Run {
+) !Disk {
     if (parttable.len == 0)
         return error.EmptyPartitionTable;
 
